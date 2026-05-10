@@ -133,7 +133,7 @@ set(PROJECT_SOURCES
     utils/LogRedirector.cpp
     macos/trafficLightsTitleBar.h
     macos/trafficLightsTitleBar.cpp
-    windowdecorations/TrafficLightsTitleBar.h\
+    windowdecorations/TrafficLightsTitleBar.h
     windowdecorations/TrafficLightsTitleBar.cpp
     macos/macWindowStyle.h
     interfaces/IComponent.h
