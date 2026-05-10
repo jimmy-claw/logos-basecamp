@@ -60,6 +60,11 @@ MainContainer::MainContainer(LogosAPI* logosAPI, QWidget* parent)
 
 MainContainer::~MainContainer()
 {
+    // Detached sidebar window has no parent - must delete explicitly
+    if (m_sidebarWindow) {
+        m_sidebarWindow->deleteLater();
+        m_sidebarWindow = nullptr;
+    }
     qDebug() << "MainContainer destroyed";
 }
 
@@ -138,12 +143,16 @@ void MainContainer::createDetachedSidebar()
     p.setColor(QPalette::Window, bgColor);
     m_sidebarWindow->setPalette(p);
 
-    // Create sidebar widget inside the window
-    createSidebarWidget(m_sidebarWindow);
-
+    // Layout MUST be created before adding child widgets so they are
+    // automatically managed by the layout (Qt does not retroactively
+    // add existing children to a new layout).
     QVBoxLayout* layout = new QVBoxLayout(m_sidebarWindow);
     layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(0);
+
+    // Create sidebar widget inside the window (auto-added to layout).
+    // Store pointer for signal connections (avoids fragile child search).
+    m_sidebarWidget = createSidebarWidget(m_sidebarWindow);
     // The sidebar QQuickWidget is auto-added to layout because it has m_sidebarWindow as parent
 
     m_sidebarWindow->setMinimumWidth(60);
@@ -186,24 +195,13 @@ void MainContainer::onMainWindowVisibilityChanged(bool visible)
 // Connect sidebar QML signals to backend - works for both embedded and detached modes.
 void MainContainer::connectSidebarSignals()
 {
-    QQuickWidget* target = m_sidebarWidget;  // embedded mode
-
-    // In detached mode, find the QQuickWidget inside m_sidebarWindow
-    if (!target && m_sidebarWindow) {
-        for (QObject* obj : m_sidebarWindow->children()) {
-            if (QQuickWidget* w = qobject_cast<QQuickWidget*>(obj)) {
-                target = w;
-                break;
-            }
-        }
-    }
-
-    if (!target) {
+    // m_sidebarWidget is set in both embedded and detached modes now
+    if (!m_sidebarWidget) {
         qWarning() << "[MainContainer] No sidebar widget found for signal connections";
         return;
     }
 
-    QObject* sidebarRoot = target->rootObject();
+    QObject* sidebarRoot = m_sidebarWidget->rootObject();
     if (!sidebarRoot) {
         qWarning() << "[MainContainer] Sidebar root object is null (QML not loaded yet?)";
         return;
