@@ -129,6 +129,8 @@ set(PROJECT_SOURCES
     main.cpp
     window.h
     window.cpp
+    SkinConfig.h
+    SkinConfig.cpp
     utils/LogRedirector.h
     utils/LogRedirector.cpp
     windowdecorations/TrafficLightsTitleBar.h
