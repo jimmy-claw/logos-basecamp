@@ -131,8 +131,6 @@ set(PROJECT_SOURCES
     window.cpp
     utils/LogRedirector.h
     utils/LogRedirector.cpp
-    macos/trafficLightsTitleBar.h
-    macos/trafficLightsTitleBar.cpp
     windowdecorations/TrafficLightsTitleBar.h
     windowdecorations/TrafficLightsTitleBar.cpp
     macos/macWindowStyle.h

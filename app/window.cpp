@@ -17,8 +17,10 @@
 #include <QStandardPaths>
 #include <QTimer>
 #include "LogosBasecampPaths.h"
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
+    #include "windowdecorations/TrafficLightsTitleBar.h"
+#endif
 #ifdef Q_OS_MAC
-    #include "trafficLightsTitleBar.h"
     #include "macWindowStyle.h"
 #endif
 
@@ -120,9 +122,11 @@ void Window::setupUi()
     setWindowTitle("Logos App");
     resize(1024, 768);
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
     setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+#if defined(Q_OS_MAC)
     setupMacOSDockReopen();
+#endif
     // Create title bar after resize() so it gets full width from the start
     m_trafficLightsTitleBar = new TrafficLightsTitleBar(this);
     m_trafficLightsTitleBar->setGeometry(0, 0, width(), TrafficLightsTitleBar::kTitleBarHeight);
@@ -134,7 +138,7 @@ void Window::setupUi()
 void Window::changeEvent(QEvent* event)
 {
     QMainWindow::changeEvent(event);
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
     if (event->type() == QEvent::WindowStateChange) {
         const bool fullScreen = (windowState() & Qt::WindowFullScreen) != 0;
         if (m_trafficLightsTitleBar) {
@@ -143,6 +147,7 @@ void Window::changeEvent(QEvent* event)
             else
                 m_trafficLightsTitleBar->show();
         }
+#if defined(Q_OS_MAC)
         applyMacWindowRoundedCorners(this, !fullScreen);
         // This is needed to fix squared corners after exiting fullscreen mode
         if (!fullScreen) {
@@ -154,6 +159,7 @@ void Window::changeEvent(QEvent* event)
                 applyMacWindowRoundedCorners(this, true);
             });
         }
+#endif
     }
 #endif
 }
@@ -161,7 +167,7 @@ void Window::changeEvent(QEvent* event)
 void Window::resizeEvent(QResizeEvent* event)
 {
     QMainWindow::resizeEvent(event);
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
     if (m_trafficLightsTitleBar && m_trafficLightsTitleBar->isVisible())
         m_trafficLightsTitleBar->setGeometry(0, 0, width(), TrafficLightsTitleBar::kTitleBarHeight);
 #endif
@@ -170,8 +176,8 @@ void Window::resizeEvent(QResizeEvent* event)
 void Window::showEvent(QShowEvent* event)
 {
     QMainWindow::showEvent(event);
-#ifdef Q_OS_MAC
-    applyMacWindowRoundedCorners(this);
+#if defined(Q_OS_LINUX)
+    // Linux doesn't need rounded corners
 #endif
 }
 
