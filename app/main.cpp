@@ -4,6 +4,7 @@
 #include "logos_mode.h"
 #include "LogosBasecampPaths.h"
 #include "LogRedirector.h"
+#include "SkinConfig.h"
 #ifdef ENABLE_QML_INSPECTOR
 #include "inspectorserver.h"
 #endif
@@ -78,10 +79,27 @@ int main(int argc, char *argv[])
             QStringLiteral("Override the data directory (isolates plugins, "
                            "modules, module_data, logs for this instance)."),
             QStringLiteral("path"));
+        QCommandLineOption skinOption({"s", "skin"},
+            QStringLiteral("Path to a skin manifest JSON file. When provided,
+                the app loads the specified skin settings (frameless window,
+                detached sidebar, theme colors) instead of defaults."),
+            QStringLiteral("path"));
         parser.addOption(userDirOption);
+        parser.addOption(skinOption);
         if (!parser.parse(app.arguments())) {
             std::cerr << parser.errorText().toStdString() << std::endl;
             return 1;
+        }
+        // Load skin config before creating Window (MainContainer reads via singleton)
+        if (parser.isSet(skinOption)) {
+            const QString skinPath = parser.value(skinOption);
+            qInfo() << "[Skin] Loading skin manifest:" << skinPath;
+            if (!SkinConfig::loadFromFile(skinPath)) {
+                qCritical() << "[Skin] Failed to load skin manifest:" << skinPath
+                            << "— falling back to defaults.";
+            }
+        } else {
+            qInfo() << "[Skin] No --skin argument; using embedded defaults.";
         }
         if (parser.isSet(userDirOption)) {
             const QString absUserDir =
