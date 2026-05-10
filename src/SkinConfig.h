@@ -51,9 +51,11 @@ public:
     // --- Meta ---
     QString skinName() const;
 
-private:
+public:
     SkinConfig(QObject* parent = nullptr);
     ~SkinConfig();
+
+private:
     bool parse(const QJsonObject& root);
 
     // Window
