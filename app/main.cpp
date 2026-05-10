@@ -80,9 +80,7 @@ int main(int argc, char *argv[])
                            "modules, module_data, logs for this instance)."),
             QStringLiteral("path"));
         QCommandLineOption skinOption({"s", "skin"},
-            QStringLiteral("Path to a skin manifest JSON file. When provided,
-                the app loads the specified skin settings (frameless window,
-                detached sidebar, theme colors) instead of defaults."),
+            QStringLiteral("Path to a skin manifest JSON file. When provided, the app loads the specified skin settings (frameless window, detached sidebar, theme colors) instead of defaults."),
             QStringLiteral("path"));
         parser.addOption(userDirOption);
         parser.addOption(skinOption);
