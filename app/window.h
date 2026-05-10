@@ -36,7 +36,7 @@ private:
     void setupUi();
     void createTrayIcon();
     void setIcon();
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) || defined(Q_OS_LINUX)
     void setupMacOSDockReopen();
 #endif
 
