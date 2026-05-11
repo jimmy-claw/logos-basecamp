@@ -11,29 +11,6 @@ std::unique_ptr<SkinConfig> SkinConfig::s_instance;
 SkinConfig::SkinConfig(QObject* parent)
     : QObject(parent)
 {
-    // Auto-load skin from environment variable if not already loaded.
-    // This handles the plugin scenario: main.cpp sets LOGOS_SKIN_PATH,
-    // then the plugin creates its own SkinConfig singleton which picks it up.
-    if (!s_instance) {
-        QByteArray skinPath = qgetenv("LOGOS_SKIN_PATH");
-        if (!skinPath.isEmpty()) {
-            QString path = QString::fromUtf8(skinPath);
-            QFile file(path);
-            if (file.exists()) {
-                QFile f(path);
-                if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                    QByteArray data = f.readAll();
-                    f.close();
-                    QJsonParseError parseError;
-                    QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
-                    if (!doc.isNull() && doc.isObject()) {
-                        parse(doc.object());
-                        qDebug() << "[SkinConfig] Auto-loaded skin from env:" << path;
-                    }
-                }
-            }
-        }
-    }
 }
 
 SkinConfig::~SkinConfig() = default;
@@ -72,6 +49,15 @@ bool SkinConfig::loadFromFile(const QString& path)
 
 SkinConfig* SkinConfig::instance()
 {
+    // Auto-create from LOGOS_SKIN_PATH env var if not yet loaded.
+    // This handles the plugin scenario: main.cpp sets the env var,
+    // then the plugin calls instance() and gets a properly configured singleton.
+    if (!s_instance) {
+        QByteArray skinPath = qgetenv("LOGOS_SKIN_PATH");
+        if (!skinPath.isEmpty()) {
+            loadFromFile(QString::fromUtf8(skinPath));
+        }
+    }
     return s_instance.get();
 }
 
