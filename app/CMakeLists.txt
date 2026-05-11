@@ -129,6 +129,8 @@ set(PROJECT_SOURCES
     main.cpp
     window.h
     window.cpp
+    SkinConfig.h
+    SkinConfig.cpp
     utils/LogRedirector.h
     utils/LogRedirector.cpp
     windowdecorations/TrafficLightsTitleBar.h
@@ -163,7 +165,6 @@ endif()
 # these Qt libraries. Linking them here ensures the portable bundler includes
 # them in the app bundle.
 target_link_libraries(LogosBasecamp PRIVATE
-    skin_config
     Qt6::Widgets
     Qt6::RemoteObjects
     Qt6::Quick

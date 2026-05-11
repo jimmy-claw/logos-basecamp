@@ -106,7 +106,6 @@ endif()
 
 # Shared utilities (LogosBasecampPaths, etc.)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../app/utils)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../shared)
 
 set(SOURCES
     main_ui_plugin.cpp
@@ -268,7 +267,6 @@ find_library(LOGOS_VIEW_MODULE_RUNTIME_LIB
 
 target_link_libraries(main_ui
     PRIVATE
-        skin_config
         Qt6::Core
         Qt6::Widgets
         Qt6::RemoteObjects
