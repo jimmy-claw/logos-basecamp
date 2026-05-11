@@ -90,8 +90,9 @@ int main(int argc, char *argv[])
         }
         // Load skin config before creating Window (MainContainer reads via singleton)
         if (parser.isSet(skinOption)) {
-            const QString skinPath = parser.value(skinOption);
+            const QString skinPath = QFileInfo(parser.value(skinOption)).absoluteFilePath();
             qInfo() << "[Skin] Loading skin manifest:" << skinPath;
+            qputenv("LOGOS_SKIN_PATH", skinPath.toUtf8());
             if (!SkinConfig::loadFromFile(skinPath)) {
                 qCritical() << "[Skin] Failed to load skin manifest:" << skinPath
                             << "— falling back to defaults.";
