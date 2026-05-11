@@ -33,9 +33,18 @@ SkinConfig parses the JSON and uses defaults for any missing keys. This means yo
 
 This would give you a frameless window with embedded sidebar at default position, using default theme colors.
 
+## Included Example Skins
+
+| Skin | File | Description |
+|------|------|-------------|
+| **Default** | `default.json` | Embedded sidebar, dark neutral theme — baseline behavior |
+| **Detached Sidebar** | `detached-sidebar.json` | Floating sidebar at (-76, 200), dark theme |
+| **Cyberpunk Neon** | `cyberpunk-neon.json` | Magenta sidebar, cyan accents, deep navy bg (Blade Runner 2049 + WinAmp Milkdrop) |
+| **Retro Pixel** | `retro-pixel.json` | Game Boy green palette, chunky borders (Mega Man / Street Fighter II menus) |
+
 ## Creating New Skins
 
-1. Copy `default.json` or `detached-sidebar.json` as a starting point
+1. Copy `default.json` or any existing skin as a starting point
 2. Modify the values you want to change
 3. Test with: `LogosBasecamp --skin /path/to/your-skin.json`
 4. Check console output for parse errors (logged via `qDebug()`)
