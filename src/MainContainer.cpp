@@ -16,6 +16,7 @@
 #include <QColor>
 #include <QPalette>
 #include <QTimer>
+#include <QWindow>
 
 MainContainer::MainContainer(LogosAPI* logosAPI, QWidget* parent)
     : QWidget(parent)
@@ -179,17 +180,21 @@ void MainContainer::createDetachedSidebar()
         qDebug() << "[Skin] Positioned detached sidebar at" << m_sidebarWindow->pos();
     });
 
-    // Sync visibility: when main window hides (minimize-to-tray), hide sidebar too
-    connect(window(), &QWidget::visibilityChanged,
-            this, &MainContainer::onMainWindowVisibilityChanged);
+    // Sync visibility: when main window hides (minimize-to-tray), hide sidebar too.
+    // QWidget has no visibilityChanged signal - use QWindow instead.
+    if (QWindow* w = window()->windowHandle()) {
+        connect(w, &QWindow::visibilityChanged,
+                this, &MainContainer::onMainWindowVisibilityChanged);
+    }
 }
 
-void MainContainer::onMainWindowVisibilityChanged(bool visible)
+void MainContainer::onMainWindowVisibilityChanged()
 {
-    if (m_sidebarWindow) {
-        m_sidebarWindow->setVisible(visible);
-        if (visible) m_sidebarWindow->raise();
-    }
+    if (!m_sidebarWindow) return;
+    // Mirror main window visibility
+    bool visible = window()->isVisible();
+    m_sidebarWindow->setVisible(visible);
+    if (visible) m_sidebarWindow->raise();
 }
 
 // Connect sidebar QML signals to backend - works for both embedded and detached modes.

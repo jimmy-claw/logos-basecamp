@@ -40,7 +40,7 @@ private slots:
     void onPluginWindowActivateRequested(QWidget* widget);
     void onOverlayActiveChanged(bool active);
     // Sync detached sidebar visibility with main window
-    void onMainWindowVisibilityChanged(bool visible);
+    void onMainWindowVisibilityChanged();
 
 private:
     void setupUi();
