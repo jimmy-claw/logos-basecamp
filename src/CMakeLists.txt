@@ -266,8 +266,8 @@ find_library(LOGOS_VIEW_MODULE_RUNTIME_LIB
     REQUIRED)
 
 target_link_libraries(main_ui
-    skin_config
     PRIVATE
+        skin_config
         Qt6::Core
         Qt6::Widgets
         Qt6::RemoteObjects
