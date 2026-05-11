@@ -4,7 +4,7 @@
 #include "logos_mode.h"
 #include "LogosBasecampPaths.h"
 #include "LogRedirector.h"
-#include "SkinConfig.h"
+#include "../src/SkinConfig.h"
 #ifdef ENABLE_QML_INSPECTOR
 #include "inspectorserver.h"
 #endif
