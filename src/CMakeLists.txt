@@ -106,11 +106,8 @@ endif()
 
 # Shared utilities (LogosBasecampPaths, etc.)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../app/utils)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../app)
 
 set(SOURCES
-    SkinConfig.h
-    SkinConfig.cpp
     main_ui_plugin.cpp
     MainContainer.cpp
     MainUIBackend.cpp
@@ -269,6 +266,7 @@ find_library(LOGOS_VIEW_MODULE_RUNTIME_LIB
     REQUIRED)
 
 target_link_libraries(main_ui
+    skin_config
     PRIVATE
         Qt6::Core
         Qt6::Widgets
