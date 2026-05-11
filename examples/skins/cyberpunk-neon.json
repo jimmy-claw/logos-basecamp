@@ -1,0 +1,22 @@
+{
+  "name": "cyberpunk-neon",
+  "version": "0.1.0",
+  "description": "Neon-drenched cyberpunk aesthetic with glowing magenta sidebar, cyan accents, and deep navy background. Inspired by Blade Runner 2049 and classic WinAmp skins like 'Milkdrop' and 'Slate'.",
+  "window": {
+    "frameless": true,
+    "titleBarHeight": 36
+  },
+  "sidebar": {
+    "detached": true,
+    "defaultWidth": 64,
+    "defaultPosition": {
+      "x": -64,
+      "y": 180
+    }
+  },
+  "theme": {
+    "background": "#0a0a1a",
+    "surface": "#12122a",
+    "border": "#ff00ff"
+  }
+}
